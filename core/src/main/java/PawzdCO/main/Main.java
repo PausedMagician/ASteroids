@@ -13,7 +13,6 @@ import static java.util.stream.Collectors.toList;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -118,8 +117,13 @@ public class Main extends Application {
     }
 
 
+    Collection<? extends IEntityProcessingService> processingServices;
+
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
-        return ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        if (processingServices == null) {
+            processingServices = ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        }
+        return processingServices;
     }
     
     
