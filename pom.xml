@@ -12,6 +12,8 @@
 
     <modules>
         <module>core</module>
+        <module>common</module>
+        <module>player</module>
     </modules>
     <properties>
         <java>java</java>
