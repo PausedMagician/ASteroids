@@ -1,15 +1,15 @@
 package PawzdCO.common.data;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class World {
-    ArrayList<Entity> entities = new ArrayList<>();
+    CopyOnWriteArrayList<Entity> entities = new CopyOnWriteArrayList<>();
 
-    public ArrayList<Entity> getEntities() {
+    public CopyOnWriteArrayList<Entity> getEntities() {
         return entities;
     }
-    public <E extends Entity> ArrayList<E> getEntities(Class<E> type) {
-        ArrayList<E> arrayList = new ArrayList<>();
+    public <E extends Entity> CopyOnWriteArrayList<E> getEntities(Class<E> type) {
+        CopyOnWriteArrayList<E> arrayList = new CopyOnWriteArrayList<>();
         for (Entity e : this.entities) {
             if (type.isInstance(e)) {
                 arrayList.add(type.cast(e));
@@ -17,13 +17,13 @@ public class World {
         }
         return arrayList;
     }
-    public void setEntities(ArrayList<Entity> entities) {
+    public void setEntities(CopyOnWriteArrayList<Entity> entities) {
         this.entities = entities;
     }
     public void addEntity(Entity e) {
         this.entities.add(e);
     }
     public void removeEntity(Entity e) {
-
+        this.entities.remove(e);
     }
 }

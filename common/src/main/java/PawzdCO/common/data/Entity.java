@@ -7,6 +7,9 @@ import javafx.scene.shape.Polygon;
 public class Entity {
 
     UUID id = UUID.randomUUID();
+    public UUID getId() {
+        return id;
+    }
 
     private int health;
     private int radius;

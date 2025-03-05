@@ -4,6 +4,7 @@ import PawzdCO.common.data.Entity;
 import PawzdCO.common.data.GameData;
 import PawzdCO.common.data.World;
 import PawzdCO.common.data.GameData.Keys;
+import PawzdCO.common.services.IEntityPostProcessingService;
 import PawzdCO.common.services.IEntityProcessingService;
 import PawzdCO.common.services.IGamePlugin;
 
@@ -16,6 +17,7 @@ import javafx.application.Application;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -30,16 +32,17 @@ public class Main extends Application {
     }
     
     
-    Pane gameWindow = new Pane();
+    Pane gw = new Pane();
     Text debugText = new Text(10,10, "");
 
     @Override
     public void start(Stage primaryStage) {
-        gameWindow.setPrefSize(gd.width, gd.height);
-        gameWindow.getChildren().add(debugText);
+
+        gw.setPrefSize(gd.width, gd.height);
+        gw.getChildren().add(debugText);
 
 
-        Scene scene = new Scene(gameWindow);
+        Scene scene = new Scene(gw);
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
             gd.width = (int)((double) newVal);
@@ -93,8 +96,8 @@ public class Main extends Application {
             @Override
             public void handle(long now) {
                 update();
-                render();
                 debugText.setText("Tick time: " + (now - lastTick)/1000);
+                draw();
                 lastTick = now;
             }
         }.start();
@@ -105,12 +108,21 @@ public class Main extends Application {
         for (IEntityProcessingService service : getEntityProcessingServices()) {
             service.process(w, gd);
         }
+        for (IEntityPostProcessingService service : getEntityPostProcessingServices()) {
+            service.process(w, gd);
+        }
     }
 
-    void render() {
+    private void draw() {
         for (Entity e : this.w.getEntities()) {
-            if (!gameWindow.getChildren().contains(e.getPolygon())) {
-                gameWindow.getChildren().add(e.getPolygon());
+            if (e.getHealth() <= 0) {
+                Polygon removedPolygon = e.getPolygon();
+                this.w.removeEntity(e);
+                gw.getChildren().remove(removedPolygon);
+                continue;
+            }
+            if (!gw.getChildren().contains(e.getPolygon())) {
+                gw.getChildren().add(e.getPolygon());
             }
             e.Render();
         }
@@ -126,6 +138,14 @@ public class Main extends Application {
         return processingServices;
     }
     
+    Collection<? extends IEntityPostProcessingService> postProcessingServices;
+
+    private Collection<? extends IEntityPostProcessingService> getEntityPostProcessingServices() {
+        if (postProcessingServices == null) {
+            postProcessingServices = ServiceLoader.load(IEntityPostProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        }
+        return postProcessingServices;
+    }
     
     private Collection<? extends IGamePlugin> getPlugins() {
         return ServiceLoader.load(IGamePlugin.class).stream().map(ServiceLoader.Provider::get).collect(toList());

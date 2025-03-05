@@ -14,6 +14,7 @@
         <module>core</module>
         <module>common</module>
         <module>player</module>
+        <module>collision</module>
     </modules>
     <properties>
         <java>java</java>

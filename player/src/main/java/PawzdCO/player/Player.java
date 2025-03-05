@@ -35,9 +35,17 @@ public class Player extends Entity implements IEntityProcessingService, IGamePlu
     public void start(GameData gd, World w) {
         Player e = new Player();
         e.setHealth(5);
+        e.setRadius(5);
         e.setLocation(gd.width/2, gd.height/2);
         e.setPolygon(new Polygon(-5,-5,10,0,-5,5));
         w.addEntity(e);
+        Player l = new Player();
+        l.setHealth(5);
+        l.setRadius(5);
+        l.setLocation(gd.width/2, gd.height/3);
+        l.setPolygon(new Polygon(-5,-5,10,0,-5,5));
+        l.setRotation(180);
+        w.addEntity(l);
     }
 
     @Override

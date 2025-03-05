@@ -38,4 +38,44 @@ public class Vector2 {
     public void addY(double y) {
         this.y += y;
     }
+
+    public void multiplySelf(double x) {
+        this.x *= x;
+        this.y *= y;
+    }
+    public Vector2 multiply(double x) {
+        this.x *= x;
+        this.y *= y;
+        return this;
+    }
+
+
+
+    public Vector2 difference(Vector2 v) {
+        return new Vector2(this.x - v.x, this.y - v.y);
+    }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public void normalize() {
+        double length = length();
+        if (length != 0) {
+            x = x / length;
+            y = y / length;
+        }
+    }
+
+    public double dot(Vector2 v) {
+        return x * v.x + y * v.y;
+    }
+
+    public double angle(Vector2 v) {
+        return Math.acos(dot(v) / (length() * v.length()));
+    }
+
+    public double cross(Vector2 v) {
+        return x * v.y - y * v.x;
+    }
 }

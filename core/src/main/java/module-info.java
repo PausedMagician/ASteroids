@@ -5,7 +5,7 @@ module Core {
     requires common;
     uses PawzdCO.common.services.IGamePlugin;
     uses PawzdCO.common.services.IEntityProcessingService;
-    // uses dk.sdu.mmmi.cbse.common.services.IPostEntityProcessingService;
+    uses PawzdCO.common.services.IEntityPostProcessingService;
 }
 
 
