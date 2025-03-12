@@ -14,6 +14,7 @@ public class Entity {
     private int health;
     private int radius;
     private Vector2 location = new Vector2();
+    private Vector2 prefferedLocation = new Vector2();
     private double rotation;
     
     public int getHealth() {
@@ -41,6 +42,13 @@ public class Entity {
         this.location.setY(y);
     }
 
+    public Vector2 getPrefferedLocation() {
+        return prefferedLocation;
+    }
+    public void setPrefferedLocation(Vector2 prefferedLocation) {
+        this.prefferedLocation = prefferedLocation;
+    }
+
     public double getRotation() {
         return rotation;
     }
@@ -60,6 +68,10 @@ public class Entity {
     @SuppressWarnings("exports")
     public void setPolygon(Polygon polygon) {
         this.polygon = polygon;
+    }
+
+    public void setPolygon(double... points) {
+        this.polygon = new Polygon(points);
     }
 
     public void Render() {

@@ -28,9 +28,10 @@ public class Vector2 {
         this.y = y;
     }
 
-    public void add(Vector2 vector2) {
+    public Vector2 add(Vector2 vector2) {
         this.x += vector2.x;
         this.y += vector2.y;
+        return this;
     }
     public void addX(double x) {
         this.x += x;
@@ -59,12 +60,13 @@ public class Vector2 {
         return Math.sqrt(x * x + y * y);
     }
 
-    public void normalize() {
+    public Vector2 normalize() {
         double length = length();
         if (length != 0) {
             x = x / length;
             y = y / length;
         }
+        return this;
     }
 
     public double dot(Vector2 v) {
@@ -77,5 +79,28 @@ public class Vector2 {
 
     public double cross(Vector2 v) {
         return x * v.y - y * v.x;
+    }
+    public void lerp(Vector2 vector2, float f) {
+        this.x = this.x + (vector2.x - this.x) * f;
+        this.y = this.y + (vector2.y - this.y) * f;
+    }
+
+    public void max(double length) {
+        if (this.length() > length) {
+            // Can't use normalize() because it will change the vector
+            double l = this.length();
+            this.x = this.x / l * length;
+            this.y = this.y / l * length;
+        }
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Vector2{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

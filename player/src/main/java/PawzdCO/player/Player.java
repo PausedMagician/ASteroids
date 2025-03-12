@@ -1,6 +1,7 @@
 package PawzdCO.player;
 import PawzdCO.common.data.Entity;
 import PawzdCO.common.data.GameData;
+import PawzdCO.common.data.Vector2;
 import PawzdCO.common.data.World;
 import PawzdCO.common.data.GameData.Keys;
 import PawzdCO.common.services.IEntityProcessingService;
@@ -9,18 +10,33 @@ import javafx.scene.shape.Polygon;
 
 public class Player extends Entity implements IEntityProcessingService, IGamePlugin {
 
+    private double speed = 5;
+    private double acceleration = 0.7;
+    private Vector2 velocity = new Vector2();
+
     public Player() {
 
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+    public Vector2 getVelocity() {
+        return velocity;
     }
 
     @Override
     public void process(World world, GameData gameData) {
         for (Player player : world.getEntities(Player.class)) {
+
+            player.getPrefferedLocation().add(player.getVelocity());
+            
             if (gameData.isPressed(Keys.UP)) {
-                double changeX = Math.cos(Math.toRadians(player.getRotation()));
-                double changeY = Math.sin(Math.toRadians(player.getRotation()));
-                player.getLocation().addX(changeX);
-                player.getLocation().addY(changeY);
+                double changeX = Math.cos(Math.toRadians(player.getRotation())) * acceleration;
+                double changeY = Math.sin(Math.toRadians(player.getRotation())) * acceleration;
+                player.getVelocity().add(new Vector2(changeX, changeY)).max(speed);
+            } else {
+                player.getVelocity().lerp(new Vector2(), 0.02f);
             }
             if (gameData.isPressed(Keys.RIGHT)) {
                 player.setRotation(player.getRotation() + 3);
@@ -37,12 +53,14 @@ public class Player extends Entity implements IEntityProcessingService, IGamePlu
         e.setHealth(5);
         e.setRadius(5);
         e.setLocation(gd.width/2, gd.height/2);
+        e.setPrefferedLocation(e.getLocation());
         e.setPolygon(new Polygon(-5,-5,10,0,-5,5));
         w.addEntity(e);
         Player l = new Player();
         l.setHealth(5);
         l.setRadius(5);
         l.setLocation(gd.width/2, gd.height/3);
+        l.setPrefferedLocation(l.getLocation());
         l.setPolygon(new Polygon(-5,-5,10,0,-5,5));
         l.setRotation(180);
         w.addEntity(l);

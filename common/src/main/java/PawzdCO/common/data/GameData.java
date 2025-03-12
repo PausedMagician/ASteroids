@@ -4,8 +4,10 @@ import java.util.EnumMap;
 
 
 public class GameData {
+    // Window data
     public int width = 800;
     public int height = 600;
+    // Key data
     public enum Keys {
         LEFT,
         RIGHT,
@@ -28,5 +30,13 @@ public class GameData {
         this.keys.put(Keys.LEFT, false);
         this.keys.put(Keys.SPACE, false);
     }
+    // Player data
+    private int score;
 
+    public int getScore() {
+        return score;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

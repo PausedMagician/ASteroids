@@ -85,20 +85,26 @@ public class Main extends Application {
             case SPACE:
                 this.gd.setPressed(Keys.SPACE, pressed);
                 break;
-            default:
+                default:
                 break;
         }
     }
 
+    public String entString = "";
+        
     void startTicking() {
         new AnimationTimer() {
             long lastTick = 0;
             @Override
             public void handle(long now) {
-                update();
-                debugText.setText("Tick time: " + (now - lastTick)/1000);
+                if (now - lastTick >= 28_000_000) {
+                    update();
+                    debugText.setText(
+                        "Tick time: " + (now - lastTick)/1000 + "ms" + "\n" + entString
+                    );
+                    lastTick = now ;
+                }
                 draw();
-                lastTick = now;
             }
         }.start();
     }
@@ -113,8 +119,12 @@ public class Main extends Application {
         }
     }
 
+
     private void draw() {
+        entString = "";
         for (Entity e : this.w.getEntities()) {
+            entString += e.getClass().getSimpleName() + ": " + e.getLocation().toString() + "\n";
+            e.getLocation().lerp(e.getPrefferedLocation(), 0.1f);
             if (e.getHealth() <= 0) {
                 Polygon removedPolygon = e.getPolygon();
                 this.w.removeEntity(e);
