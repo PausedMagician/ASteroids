@@ -107,4 +107,10 @@ public class Entity {
         this.polygon.setTranslateY(this.location.getY());
         this.polygon.setRotate(this.getRotation());
     }
+
+    @Override
+    public String toString() {
+        // Make a string that's always the same length with full representation of the entity
+        return String.format("%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s", this.getClass().getSimpleName(), this.id.toString(), this.isAlive, this.health, this.radius, this.location, this.prefferedLocation, this.velocity, this.rotation, this.mass, this.polygon.getPoints());
+    }
 }

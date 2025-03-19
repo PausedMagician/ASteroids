@@ -38,7 +38,9 @@ public class Collision implements IEntityPostProcessingService {
 
                         // Adjust positions to resolve overlap
                         e.getLocation().add(delta);
+                        e.setPrefferedLocation(e.getLocation());
                         n.getLocation().subtract(delta);
+                        n.setPrefferedLocation(n.getLocation());
 
                         // Adjust velocities to simulate collision response
                         Vector2 relativeVelocity = e.getVelocity().difference(n.getVelocity());

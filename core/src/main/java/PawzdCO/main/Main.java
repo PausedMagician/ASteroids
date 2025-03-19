@@ -130,7 +130,7 @@ public class Main extends Application {
         entString += "Score: " + gd.getScore() + "\n";
         entString += "Entities: " + this.w.getEntities().size() + "\n";
         for (Entity e : this.w.getEntities()) {
-            entString += e.getClass().getSimpleName() + ": " + e.getPrefferedLocation().round().toString() + " -> " + e.getLocation().round().toString() + "\n";
+            entString += e.toString() + "\n";
             if (!e.isAlive()) {
                 Polygon removedPolygon = e.getPolygon();
                 this.w.removeEntity(e);
@@ -141,19 +141,6 @@ public class Main extends Application {
                 gw.getChildren().add(e.getPolygon());
             }
             e.getLocation().lerp(e.getPrefferedLocation(), 0.1f); // Adjust lerping speed
-
-            if (e.getLocation().getX() > gd.width) {
-                e.getLocation().setX(0);
-            }
-            if (e.getLocation().getX() < 0) {
-                e.getLocation().setX(gd.width);
-            }
-            if (e.getLocation().getY() > gd.height) {
-                e.getLocation().setY(0);
-            }
-            if (e.getLocation().getY() < 0) {
-                e.getLocation().setY(gd.height);
-            }
 
             e.Render();
         }

@@ -124,4 +124,7 @@ public class Vector2 {
         this.y /= value;
         return this;
     }
+    public int distance(Vector2 location) {
+        return (int) Math.sqrt(Math.pow(location.x - this.x, 2) + Math.pow(location.y - this.y, 2));
+    }
 }

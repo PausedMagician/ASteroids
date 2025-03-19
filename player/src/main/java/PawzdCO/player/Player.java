@@ -40,6 +40,18 @@ public class Player extends Entity implements IEntityProcessingService, IGamePlu
             if (gameData.isPressed(Keys.LEFT)) {
                 player.setRotation(player.getRotation() - 3);
             }
+
+            if (player.getLocation().getX() < 0) {
+                player.setLocation(gameData.width, player.getLocation().getY());
+            } else if (player.getLocation().getX() > gameData.width) {
+                player.setLocation(0, player.getLocation().getY());
+            }
+            if (player.getLocation().getY() < 0) {
+                player.setLocation(player.getLocation().getX(), gameData.height);
+            } else if (player.getLocation().getY() > gameData.height) {
+                player.setLocation(player.getLocation().getX(), 0);
+            }
+
             break;
         }
     }

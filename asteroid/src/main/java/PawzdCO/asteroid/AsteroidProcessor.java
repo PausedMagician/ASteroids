@@ -9,22 +9,39 @@ import PawzdCO.common.services.IEntityProcessingService;
 
 public class AsteroidProcessor implements IEntityProcessingService {
 
+    private Long lastSpawn;
+
     @Override
     public void process(World world, GameData gameData) {
         CopyOnWriteArrayList<Asteroid> asteroids = world.getEntities(Asteroid.class);
-        if (asteroids.isEmpty() || asteroids.size() < (10 * (gameData.getScore() % 10))) {
+        Random r = new Random();
+        if ((asteroids.isEmpty() || asteroids.size() < Math.min((3 * (gameData.getScore() / 5)), (((gameData.height+gameData.width)/2)/25))) && (lastSpawn == null || System.currentTimeMillis() - lastSpawn > 5000)) {
             Asteroid a = new Asteroid();
             a.setHealth(3);
-            Random r = new Random();
+            a.setMass(a.getRadius());
             if (r.nextBoolean()) {
-                a.setLocation(r.nextBoolean() ? 0 : gameData.width, r.nextInt(gameData.height));
+                // Spawn on left or right side
+                // Ouside the screen with 1.5 * radius
+                if (r.nextBoolean()) {
+                    a.setLocation(r.nextBoolean() ? 0 - a.getRadius() * 1.5 : gameData.width + a.getRadius() * 1.5, r.nextInt(gameData.height));
+                } else {
+                    a.setLocation(r.nextInt(gameData.width), r.nextBoolean() ? 0 - a.getRadius() * 1.5 : gameData.height + a.getRadius() * 1.5);
+                }
             } else {
-                a.setLocation(r.nextInt(gameData.width), r.nextBoolean() ? 0 : gameData.height);
+                // Spawn on top or bottom side
+                // Ouside the screen with 1.5 * radius
+                if (r.nextBoolean()) {
+                    a.setLocation(r.nextInt(gameData.width), r.nextBoolean() ? 0 - a.getRadius() * 1.5 : gameData.height + a.getRadius() * 1.5);
+                } else {
+                    a.setLocation(r.nextBoolean() ? 0 - a.getRadius() * 1.5 : gameData.width + a.getRadius() * 1.5, r.nextInt(gameData.height));
+                }
             }
             a.setPrefferedLocation(a.getLocation());
             a.setVelocity(r.nextDouble(-1, 1), r.nextDouble(-1, 1));
             
             world.addEntity(a);
+            
+            lastSpawn = System.currentTimeMillis();
         }
         for (Asteroid asteroid : asteroids) {
             if (asteroid.getHealth() <= 0) {
@@ -32,7 +49,25 @@ public class AsteroidProcessor implements IEntityProcessingService {
                 asteroid.setAlive(false);
                 continue;
             }
+            asteroid.getVelocity().max(5);
             asteroid.getPrefferedLocation().add(asteroid.getVelocity());
+
+            
+            int neg = (int) (0 - asteroid.getRadius() * 1.5);
+            int width = (int) (gameData.width + asteroid.getRadius() * 1.5);
+            int height = (int) (gameData.height + asteroid.getRadius() * 1.5);
+
+            if (asteroid.getLocation().getX() < neg) {
+                asteroid.getLocation().setX(width);
+            } else if (asteroid.getLocation().getX() > width) {
+                asteroid.getLocation().setX(neg);
+            }
+            if (asteroid.getLocation().getY() < neg) {
+                asteroid.getLocation().setY(height);
+            } else if (asteroid.getLocation().getY() > height) {
+                asteroid.getLocation().setY(neg);
+            }
+
         }
     }
     
