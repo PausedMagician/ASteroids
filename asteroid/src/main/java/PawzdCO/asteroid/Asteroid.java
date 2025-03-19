@@ -6,7 +6,6 @@ import PawzdCO.common.data.Entity;
 import PawzdCO.common.data.Vector2;
 
 public class Asteroid extends Entity {
-    private Vector2 velocity = new Vector2(0,0);
 
     public Asteroid() {
         Random r = new Random();
@@ -23,16 +22,6 @@ public class Asteroid extends Entity {
             poly[i * 2 + 1] = y;
         }
         this.setPolygon(poly);
-    }
-
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-    public void setVelocity(Vector2 velocity) {
-        this.velocity = velocity;
-    }
-    public void addVelocity(Vector2 velocity) {
-        this.velocity.add(velocity);
     }
     
 }

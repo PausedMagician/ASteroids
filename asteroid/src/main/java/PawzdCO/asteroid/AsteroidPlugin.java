@@ -15,8 +15,8 @@ public class AsteroidPlugin implements IGamePlugin {
         w.addEntity(new Asteroid() {
             {
                 setHealth(1);
-                setRadius(4);
                 setLocation(gd.width/4, gd.height/4);
+                setPrefferedLocation(getLocation());
                 setVelocity(new Vector2(r.nextDouble(-1, 1), r.nextDouble(-1, 1)));
             }
         });

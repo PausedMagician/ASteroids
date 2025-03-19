@@ -11,8 +11,7 @@ import javafx.scene.shape.Polygon;
 public class Player extends Entity implements IEntityProcessingService, IGamePlugin {
 
     private double speed = 5;
-    private double acceleration = 0.7;
-    private Vector2 velocity = new Vector2();
+    private double acceleration = 0.1;
 
     public Player() {
 
@@ -20,9 +19,6 @@ public class Player extends Entity implements IEntityProcessingService, IGamePlu
 
     public double getSpeed() {
         return speed;
-    }
-    public Vector2 getVelocity() {
-        return velocity;
     }
 
     @Override
@@ -44,20 +40,21 @@ public class Player extends Entity implements IEntityProcessingService, IGamePlu
             if (gameData.isPressed(Keys.LEFT)) {
                 player.setRotation(player.getRotation() - 3);
             }
+            break;
         }
     }
 
     @Override
     public void start(GameData gd, World w) {
         Player e = new Player();
-        e.setHealth(5);
+        e.setHealth(999999);
         e.setRadius(5);
         e.setLocation(gd.width/2, gd.height/2);
         e.setPrefferedLocation(e.getLocation());
         e.setPolygon(new Polygon(-5,-5,10,0,-5,5));
         w.addEntity(e);
         Player l = new Player();
-        l.setHealth(5);
+        l.setHealth(5000);
         l.setRadius(5);
         l.setLocation(gd.width/2, gd.height/3);
         l.setPrefferedLocation(l.getLocation());

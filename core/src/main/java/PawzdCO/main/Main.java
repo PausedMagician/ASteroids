@@ -90,19 +90,24 @@ public class Main extends Application {
         }
     }
 
-    public String entString = "";
-        
+    public String entString = ""; 
+
     void startTicking() {
         new AnimationTimer() {
-            long lastTick = 0;
+            long lastTick = System.nanoTime();
+            double accumulator = 0.0;
+            final double fixedDelta = 1.0 / 60.0; // 60 updates per second
+
             @Override
             public void handle(long now) {
-                if (now - lastTick >= 28_000_000) {
+                double elapsedTime = (now - lastTick) / 1_000_000_000.0;
+                lastTick = now;
+                accumulator += elapsedTime;
+
+                while (accumulator >= fixedDelta) {
+                    debugText.setText(entString);
                     update();
-                    debugText.setText(
-                        "Tick time: " + (now - lastTick)/1000 + "ms" + "\n" + entString
-                    );
-                    lastTick = now ;
+                    accumulator -= fixedDelta;
                 }
                 draw();
             }
@@ -122,10 +127,11 @@ public class Main extends Application {
 
     private void draw() {
         entString = "";
+        entString += "Score: " + gd.getScore() + "\n";
+        entString += "Entities: " + this.w.getEntities().size() + "\n";
         for (Entity e : this.w.getEntities()) {
-            entString += e.getClass().getSimpleName() + ": " + e.getLocation().toString() + "\n";
-            e.getLocation().lerp(e.getPrefferedLocation(), 0.1f);
-            if (e.getHealth() <= 0) {
+            entString += e.getClass().getSimpleName() + ": " + e.getPrefferedLocation().round().toString() + " -> " + e.getLocation().round().toString() + "\n";
+            if (!e.isAlive()) {
                 Polygon removedPolygon = e.getPolygon();
                 this.w.removeEntity(e);
                 gw.getChildren().remove(removedPolygon);
@@ -134,6 +140,21 @@ public class Main extends Application {
             if (!gw.getChildren().contains(e.getPolygon())) {
                 gw.getChildren().add(e.getPolygon());
             }
+            e.getLocation().lerp(e.getPrefferedLocation(), 0.1f); // Adjust lerping speed
+
+            if (e.getLocation().getX() > gd.width) {
+                e.getLocation().setX(0);
+            }
+            if (e.getLocation().getX() < 0) {
+                e.getLocation().setX(gd.width);
+            }
+            if (e.getLocation().getY() > gd.height) {
+                e.getLocation().setY(0);
+            }
+            if (e.getLocation().getY() < 0) {
+                e.getLocation().setY(gd.height);
+            }
+
             e.Render();
         }
     }

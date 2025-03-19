@@ -11,11 +11,21 @@ public class Entity {
         return id;
     }
 
+    private boolean isAlive = true;
+    public boolean isAlive() {
+        return isAlive;
+    }
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
     private int health;
     private int radius;
     private Vector2 location = new Vector2();
     private Vector2 prefferedLocation = new Vector2();
+    private Vector2 velocity = new Vector2(0,0);
     private double rotation;
+
+    private double mass = 1;
     
     public int getHealth() {
         return health;
@@ -49,6 +59,17 @@ public class Entity {
         this.prefferedLocation = prefferedLocation;
     }
 
+    public Vector2 getVelocity() {
+        return velocity;
+    }
+    public void setVelocity(Vector2 velocity) {
+        this.velocity = velocity;
+    }
+    public void setVelocity(double x, double y) {
+        this.velocity.setX(x);
+        this.velocity.setY(y);
+    }
+
     public double getRotation() {
         return rotation;
     }
@@ -72,6 +93,13 @@ public class Entity {
 
     public void setPolygon(double... points) {
         this.polygon = new Polygon(points);
+    }
+
+    public double getMass() {
+        return mass;
+    }
+    public void setMass(double mass) {
+        this.mass = mass;
     }
 
     public void Render() {

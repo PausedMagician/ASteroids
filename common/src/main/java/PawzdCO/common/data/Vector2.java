@@ -40,6 +40,18 @@ public class Vector2 {
         this.y += y;
     }
 
+    public Vector2 subtract(Vector2 vector2) {
+        this.x -= vector2.x;
+        this.y -= vector2.y;
+        return this;
+    }
+    public void subtractX(double x) {
+        this.x -= x;
+    }
+    public void subtractY(double y) {
+        this.y -= y;
+    }
+
     public void multiplySelf(double x) {
         this.x *= x;
         this.y *= y;
@@ -48,6 +60,10 @@ public class Vector2 {
         this.x *= x;
         this.y *= y;
         return this;
+    }
+
+    public Vector2 round() {
+        return new Vector2(Math.round(x), Math.round(y));
     }
 
 
@@ -102,5 +118,10 @@ public class Vector2 {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+    public Vector2 divide(double value) {
+        this.x /= value;
+        this.y /= value;
+        return this;
     }
 }
