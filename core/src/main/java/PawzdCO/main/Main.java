@@ -16,6 +16,8 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
@@ -33,6 +35,7 @@ public class Main extends Application {
     
     
     Pane gw = new Pane();
+    Canvas canvas = new Canvas(gd.width, gd.height);
     Text debugText = new Text(10,10, "");
 
     @Override
@@ -40,16 +43,19 @@ public class Main extends Application {
 
         gw.setPrefSize(gd.width, gd.height);
         gw.getChildren().add(debugText);
+        gw.getChildren().add(canvas);
 
 
         Scene scene = new Scene(gw);
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
             gd.width = (int)((double) newVal);
+            canvas.setWidth(gd.width);
             System.out.println(newVal);
         });
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
             gd.height = (int)((double) newVal);
+            canvas.setHeight(gd.height);
             System.out.println(newVal);
         });
         
@@ -129,6 +135,8 @@ public class Main extends Application {
         entString = "";
         entString += "Score: " + gd.getScore() + "\n";
         entString += "Entities: " + this.w.getEntities().size() + "\n";
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, gd.width, gd.height);
         for (Entity e : this.w.getEntities()) {
             entString += e.toString() + "\n";
             if (!e.isAlive()) {
@@ -142,7 +150,7 @@ public class Main extends Application {
             }
             e.getLocation().lerp(e.getPrefferedLocation(), 0.1f); // Adjust lerping speed
 
-            e.Render();
+            e.Render(gc);
         }
     }
 

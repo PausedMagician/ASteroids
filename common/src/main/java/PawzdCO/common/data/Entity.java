@@ -2,6 +2,7 @@ package PawzdCO.common.data;
 
 import java.util.UUID;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Polygon;
 
 public class Entity {
@@ -102,10 +103,16 @@ public class Entity {
         this.mass = mass;
     }
 
-    public void Render() {
+    public void Render(GraphicsContext gc) {
         this.polygon.setTranslateX(this.location.getX());
         this.polygon.setTranslateY(this.location.getY());
         this.polygon.setRotate(this.getRotation());
+
+        gc.save();
+        gc.translate(this.location.getX(), this.location.getY());
+        gc.rotate(this.getRotation());
+        gc.strokeOval(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
+        gc.restore();
     }
 
     @Override
