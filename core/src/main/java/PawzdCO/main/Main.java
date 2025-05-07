@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    GameData gd = new GameData();
+    GameData gameData = new GameData();
     World w = new World();
 
     
@@ -34,28 +34,28 @@ public class Main extends Application {
     }
     
     
-    Pane gw = new Pane();
-    Canvas canvas = new Canvas(gd.width, gd.height);
+    Pane gameWindow = new Pane();
+    Canvas canvas = new Canvas(gameData.width, gameData.height);
     Text debugText = new Text(10,10, "");
 
     @Override
     public void start(Stage primaryStage) {
 
-        gw.setPrefSize(gd.width, gd.height);
-        gw.getChildren().add(debugText);
-        gw.getChildren().add(canvas);
+        gameWindow.setPrefSize(gameData.width, gameData.height);
+        gameWindow.getChildren().add(debugText);
+        gameWindow.getChildren().add(canvas);
 
 
-        Scene scene = new Scene(gw);
+        Scene scene = new Scene(gameWindow);
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            gd.width = (int)((double) newVal);
-            canvas.setWidth(gd.width);
+            gameData.width = (int)((double) newVal);
+            canvas.setWidth(gameData.width);
             System.out.println(newVal);
         });
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            gd.height = (int)((double) newVal);
-            canvas.setHeight(gd.height);
+            gameData.height = (int)((double) newVal);
+            canvas.setHeight(gameData.height);
             System.out.println(newVal);
         });
         
@@ -67,7 +67,7 @@ public class Main extends Application {
         primaryStage.show();
 
         for(IGamePlugin plugin : getPlugins()) {
-            plugin.start(gd, w);
+            plugin.start(gameData, w);
         }
 
         startTicking();
@@ -78,25 +78,23 @@ public class Main extends Application {
         switch(event.getCode()) {
             case UP:
             case W:
-                this.gd.setPressed(Keys.UP, pressed);
+                this.gameData.setPressed(Keys.UP, pressed);
                 break;
             case RIGHT:
             case D:
-                this.gd.setPressed(Keys.RIGHT, pressed);
+                this.gameData.setPressed(Keys.RIGHT, pressed);
                 break;
             case LEFT:
             case A:
-                this.gd.setPressed(Keys.LEFT, pressed);
+                this.gameData.setPressed(Keys.LEFT, pressed);
                 break;
             case SPACE:
-                this.gd.setPressed(Keys.SPACE, pressed);
+                this.gameData.setPressed(Keys.SPACE, pressed);
                 break;
-                default:
+            default:
                 break;
         }
     }
-
-    public String entString = ""; 
 
     void startTicking() {
         new AnimationTimer() {
@@ -111,11 +109,10 @@ public class Main extends Application {
                 accumulator += elapsedTime;
 
                 while (accumulator >= fixedDelta) {
-                    debugText.setText(entString);
                     update();
+                    draw();
                     accumulator -= fixedDelta;
                 }
-                draw();
             }
         }.start();
     }
@@ -123,39 +120,40 @@ public class Main extends Application {
 
     void update() {
         for (IEntityProcessingService service : getEntityProcessingServices()) {
-            service.process(w, gd);
+            service.process(w, gameData);
         }
         for (IEntityPostProcessingService service : getEntityPostProcessingServices()) {
-            service.process(w, gd);
+            service.process(w, gameData);
         }
     }
 
 
     private void draw() {
-        entString = "";
-        entString += "Score: " + gd.getScore() + "\n";
-        entString += "Entities: " + this.w.getEntities().size() + "\n";
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, gd.width, gd.height);
+        gc.clearRect(0, 0, gameData.width, gameData.height);
+
         for (Entity e : this.w.getEntities()) {
-            entString += e.toString() + "\n";
             if (!e.isAlive()) {
                 Polygon removedPolygon = e.getPolygon();
                 this.w.removeEntity(e);
-                gw.getChildren().remove(removedPolygon);
+                gameWindow.getChildren().remove(removedPolygon);
                 continue;
             }
-            if (!gw.getChildren().contains(e.getPolygon())) {
-                gw.getChildren().add(e.getPolygon());
+
+            if (!gameWindow.getChildren().contains(e.getPolygon())) {
+                gameWindow.getChildren().add(e.getPolygon());
             }
-            e.getLocation().lerp(e.getPrefferedLocation(), 0.1f); // Adjust lerping speed
 
             e.Render(gc);
         }
     }
 
 
+    // Services
+
     Collection<? extends IEntityProcessingService> processingServices;
+    Collection<? extends IEntityPostProcessingService> postProcessingServices;
+
 
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         if (processingServices == null) {
@@ -163,8 +161,6 @@ public class Main extends Application {
         }
         return processingServices;
     }
-    
-    Collection<? extends IEntityPostProcessingService> postProcessingServices;
 
     private Collection<? extends IEntityPostProcessingService> getEntityPostProcessingServices() {
         if (postProcessingServices == null) {

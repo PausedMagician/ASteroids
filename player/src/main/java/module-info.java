@@ -1,9 +1,9 @@
-import PawzdCO.common.services.IEntityProcessingService;
-import PawzdCO.common.services.IGamePlugin;
+import PawzdCO.common.services.*;
+import PawzdCO.player.*;
 
 module player {
     requires common;
-    requires javafx.graphics;
-    provides IEntityProcessingService with PawzdCO.player.Player;
-    provides IGamePlugin with PawzdCO.player.Player;
+
+    provides IGamePlugin with PlayerPluginService;
+    provides IEntityProcessingService with PlayerControlSystem;
 }
