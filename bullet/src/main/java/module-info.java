@@ -1,0 +1,3 @@
+module bullet {
+    requires common;
+}
