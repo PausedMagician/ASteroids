@@ -16,6 +16,7 @@
         <module>common</module>
         <module>player</module>
         <module>bullet</module>
+        <module>collision</module>
     </modules>
 
     <properties>

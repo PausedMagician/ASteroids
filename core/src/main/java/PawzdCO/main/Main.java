@@ -7,6 +7,7 @@ import PawzdCO.common.data.GameData.Keys;
 import PawzdCO.common.services.IEntityPostProcessingService;
 import PawzdCO.common.services.IEntityProcessingService;
 import PawzdCO.common.services.IGamePlugin;
+import PawzdCO.common.services.IWorldAware;
 
 import java.util.Collection;
 import java.util.ServiceLoader;
@@ -65,6 +66,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Hello World!");
         primaryStage.show();
+
+        for(IWorldAware module : ServiceLoader.load(IWorldAware.class)) {
+            module.provideWorld(w);
+        }
 
         for(IGamePlugin plugin : getPlugins()) {
             plugin.start(gameData, w);

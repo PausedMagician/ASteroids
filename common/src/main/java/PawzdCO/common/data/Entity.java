@@ -3,6 +3,7 @@ package PawzdCO.common.data;
 import java.util.UUID;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 
 public class Entity {
@@ -21,6 +22,10 @@ public class Entity {
 
     public void setAlive(boolean isAlive) {
         this.isAlive = isAlive;
+    }
+
+    public void kill() {
+        this.isAlive = false;
     }
 
     private int health;
@@ -101,6 +106,7 @@ public class Entity {
         this.polygon.setRotate(this.getRotation());
 
         gc.save();
+        gc.setStroke(Paint.valueOf("red"));
         gc.translate(this.location.getX(), this.location.getY());
         gc.rotate(this.getRotation());
         gc.strokeOval(-this.radius, -this.radius, this.radius * 2, this.radius * 2);

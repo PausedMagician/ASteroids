@@ -49,6 +49,19 @@ public class Vector2 {
         this.y -= vector2.y;
         return this;
     }
+
+    public Vector2 subtract(double x, double y) {
+        this.x -= x;
+        this.y -= y;
+        return this;
+    }
+
+    public Vector2 subtract(double x) {
+        this.x -= x;
+        this.y -= x;
+        return this;
+    }
+
     public void subtractX(double x) {
         this.x -= x;
     }
@@ -58,11 +71,11 @@ public class Vector2 {
 
     public void multiplySelf(double x) {
         this.x *= x;
-        this.y *= y;
+        this.y *= x;
     }
     public Vector2 multiply(double x) {
         this.x *= x;
-        this.y *= y;
+        this.y *= x;
         return this;
     }
 
