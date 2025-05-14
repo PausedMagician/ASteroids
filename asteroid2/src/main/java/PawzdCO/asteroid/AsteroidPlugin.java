@@ -8,7 +8,7 @@ public class AsteroidPlugin implements IGamePlugin {
 
     @Override
     public void start(GameData gd, World w) {
-        System.out.println("AST1");
+        System.out.println("AST 2");
     }
 
     @Override
@@ -16,5 +16,4 @@ public class AsteroidPlugin implements IGamePlugin {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'stop'");
     }
-    
 }

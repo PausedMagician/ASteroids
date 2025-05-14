@@ -10,8 +10,14 @@ import PawzdCO.common.services.IGamePlugin;
 import PawzdCO.common.services.IWorldAware;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.ServiceLoader;
+import java.util.Set;
+
 import static java.util.stream.Collectors.toList;
+
+import java.lang.module.ModuleFinder;
+import java.nio.file.Paths;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -159,23 +165,34 @@ public class Main extends Application {
     Collection<? extends IEntityProcessingService> processingServices;
     Collection<? extends IEntityPostProcessingService> postProcessingServices;
 
+    ModuleLayer layer = getModuleLayer(2);
+
+
+    private ModuleLayer getModuleLayer(int _layer) {
+        ModuleFinder finder = ModuleFinder.of(Paths.get(String.format("mods-mvn-%,d", _layer)));
+        ModuleLayer parent = ModuleLayer.boot();
+        List<String> modules = finder.findAll().stream().map(m -> m.descriptor().name()).collect(toList());
+        java.lang.module.Configuration config = parent.configuration().resolve(finder, ModuleFinder.of(), modules);
+        ModuleLayer layer = parent.defineModulesWithOneLoader(config, ClassLoader.getPlatformClassLoader());
+        return layer;
+    }
 
     private Collection<? extends IEntityProcessingService> getEntityProcessingServices() {
         if (processingServices == null) {
-            processingServices = ServiceLoader.load(IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+            processingServices = ServiceLoader.load(layer, IEntityProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
         }
         return processingServices;
     }
 
     private Collection<? extends IEntityPostProcessingService> getEntityPostProcessingServices() {
         if (postProcessingServices == null) {
-            postProcessingServices = ServiceLoader.load(IEntityPostProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+            postProcessingServices = ServiceLoader.load(layer, IEntityPostProcessingService.class).stream().map(ServiceLoader.Provider::get).collect(toList());
         }
         return postProcessingServices;
     }
     
     private Collection<? extends IGamePlugin> getPlugins() {
-        return ServiceLoader.load(IGamePlugin.class).stream().map(ServiceLoader.Provider::get).collect(toList());
+        return ServiceLoader.load(layer, IGamePlugin.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }
 
 }
