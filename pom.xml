@@ -17,6 +17,9 @@
         <module>player</module>
         <module>bullet</module>
         <module>collision</module>
+        <module>asteroid</module>
+        <module>asteroid</module>
+        <module>asteroid2</module>
     </modules>
 
     <properties>

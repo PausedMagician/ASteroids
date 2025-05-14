@@ -1,0 +1,4 @@
+module asteroid {
+    requires common;
+    
+}
