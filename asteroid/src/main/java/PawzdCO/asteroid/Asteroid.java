@@ -1,5 +1,6 @@
 package PawzdCO.asteroid;
 
+import java.util.Random;
 import java.util.ServiceLoader;
 
 import PawzdCO.common.data.Config;
@@ -17,16 +18,10 @@ public class Asteroid extends Entity {
         // Square
         this.sizing = sizing;
 
-        this.sides = (int) Math.round(Math.random() * 2 + 3);
+        this.sides = new Random().nextInt(3, 12);
 
         // Create a polygon with random sides
-        double[] points = new double[this.sides * 2];
-        for (int i = 0; i < this.sides; i++) {
-            double angle = Math.toRadians(i * (360.0 / this.sides));
-            points[i * 2] = Math.cos(angle) * sizing;
-            points[i * 2 + 1] = Math.sin(angle) * sizing;
-        }
-        this.setPolygon(points);
+        createPolygon();
 
         this.setRadius((int) sizing);
     }
@@ -39,8 +34,13 @@ public class Asteroid extends Entity {
         double[] points = new double[this.sides * 2];
         for (int i = 0; i < this.sides; i++) {
             double angle = Math.toRadians(i * (360.0 / this.sides));
-            points[i * 2] = Math.cos(angle) * sizing;
-            points[i * 2 + 1] = Math.sin(angle) * sizing;
+            Random random = new Random();
+
+            double from = -((sizing / 10) * this.sides / 10);
+            double to = sizing / 10 * this.sides / 10;
+
+            points[i * 2] = Math.cos(angle) * sizing + random.nextDouble(from, to);
+            points[i * 2 + 1] = Math.sin(angle) * sizing + random.nextDouble(from, to);
         }
         this.setPolygon(points);
     }
@@ -56,7 +56,7 @@ public class Asteroid extends Entity {
     public void kill() {
         super.kill();
         // Add score and split.
-        if (this.getRadius() >= ASTEROID_SIZING * Config.SIZING) {
+        if (this.getRadius() >= ASTEROID_SIZING * Config.SIZING * 1.3) {
             // System.out.println("Splitting asteroid" + this.getId());
             ServiceLoader.load(IAsteroidSPI.class).findFirst().ifPresent(asteroidSPI -> {
                 asteroidSPI.spawnEntity(this);

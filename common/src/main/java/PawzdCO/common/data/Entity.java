@@ -92,10 +92,11 @@ public class Entity {
 
     public void setPolygon(Polygon polygon) {
         this.polygon = polygon;
+        this.polygon.setFill(Paint.valueOf("white"));
     }
 
     public void setPolygon(double... points) {
-        this.polygon = new Polygon(points);
+        this.setPolygon(new Polygon(points));
     }
 
     public void Render(GraphicsContext gc) {
@@ -103,12 +104,14 @@ public class Entity {
         this.polygon.setTranslateY(this.location.getY());
         this.polygon.setRotate(this.getRotation());
 
-        gc.save();
-        gc.setStroke(Paint.valueOf("red"));
-        gc.translate(this.location.getX(), this.location.getY());
-        gc.rotate(this.getRotation());
-        gc.strokeOval(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
-        gc.restore();
+        if (Config.DEBUG) {
+            gc.save();
+            gc.setStroke(Paint.valueOf("red"));
+            gc.translate(this.location.getX(), this.location.getY());
+            gc.rotate(this.getRotation());
+            gc.strokeOval(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
+            gc.restore();
+        }
     }
 
     @Override

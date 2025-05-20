@@ -24,7 +24,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -50,7 +53,7 @@ public class Main extends Application {
         gameWindow.setPrefSize(gameData.width, gameData.height);
         gameWindow.getChildren().add(debugText);
         gameWindow.getChildren().add(canvas);
-
+        gameWindow.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
         Scene scene = new Scene(gameWindow);
 

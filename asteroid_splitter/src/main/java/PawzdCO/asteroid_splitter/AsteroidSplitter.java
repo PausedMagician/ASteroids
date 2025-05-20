@@ -1,5 +1,7 @@
 package PawzdCO.asteroid_splitter;
 
+import java.util.Random;
+
 import PawzdCO.common.data.Entity;
 import PawzdCO.common.data.Vector2;
 import PawzdCO.common.data.World;
@@ -20,7 +22,8 @@ public class AsteroidSplitter implements IAsteroidSPI, IWorldAware {
         int parentRadius = entity.getRadius();
 
         // Spawn 2-4 smaller asteroids
-        int numChildren = (int) (Math.random() * 3) + 2; // Random number between 2 and 4
+        // The bigger the asteroid, the more children it spawns
+        int numChildren = new Random().nextInt(2, Math.max(4, Math.ceilDiv(parentRadius, 3)));
         // System.out.println("Spawning " + numChildren + " children for asteroid " + entity.getId());
 
         Vector2 location = new Vector2(entity.getLocation());
@@ -43,7 +46,7 @@ public class AsteroidSplitter implements IAsteroidSPI, IWorldAware {
                 newAsteroid.setLocation(newLocation);
                 // System.out.println(newAsteroid.getId() + " at " + newAsteroid.getLocation());
 
-                newAsteroid.setVelocity(new Vector2(direction).multiply(Math.max(0.2, entity.getVelocity().length() / 2)).add(new Vector2(entity.getVelocity()).divide(numChildren*2)));
+                newAsteroid.setVelocity(new Vector2(direction).rotate(Math.random() * 20 - 10).multiply(Math.max(0.2, entity.getVelocity().length() / 2)).add(new Vector2(entity.getVelocity()).divide(numChildren)));
                 // newAsteroid.setVelocity(new Vector2(direction));
                 newAsteroid.setRotation(Math.random() * 360);
                 

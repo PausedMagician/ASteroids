@@ -11,6 +11,7 @@ public class Player extends Entity {
         super();
         double size = PLAYER_SIZING * Config.SIZING;
         this.setPolygon(-size, size, 0, -size*1.5f, size, size, 0, size/2);
+        this.getPolygon().setFill(javafx.scene.paint.Color.BLUE);
         this.setRadius((int)size);
     }
 }

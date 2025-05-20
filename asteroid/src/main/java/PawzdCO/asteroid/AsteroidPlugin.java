@@ -10,12 +10,12 @@ public class AsteroidPlugin implements IGamePlugin {
     public void start(GameData gd, World w) {
         System.out.println("AST1");
 
-        Asteroid asteroid = new Asteroid();
+        // Asteroid asteroid = new Asteroid();
 
-        asteroid.getLocation().addX(200);
-        asteroid.getLocation().addY(200);
+        // asteroid.getLocation().addX(200);
+        // asteroid.getLocation().addY(200);
 
-        w.addEntity(asteroid);
+        // w.addEntity(asteroid);
     }
 
     @Override
