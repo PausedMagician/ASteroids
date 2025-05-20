@@ -9,18 +9,14 @@
           <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>PawzdCO</groupId>
-    <artifactId>player</artifactId>
+    <artifactId>common_ship</artifactId>
+    <name>common_ship</name>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>PawzdCO</groupId>
             <artifactId>common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>PawzdCO</groupId>
-            <artifactId>common_ship</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

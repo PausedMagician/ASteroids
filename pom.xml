@@ -14,12 +14,14 @@
     <modules>
         <module>core</module>
         <module>common</module>
+        <module>common_ship</module>
         <module>player</module>
         <module>bullet</module>
         <module>collision</module>
         <module>asteroid</module>
         <module>asteroid2</module>
         <module>asteroid_splitter</module>
+        <module>enemy</module>
     </modules>
 
     <properties>

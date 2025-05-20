@@ -1,12 +1,9 @@
 package PawzdCO.player;
 
-import java.util.ServiceLoader;
-
 import PawzdCO.common.data.GameData;
 import PawzdCO.common.data.Vector2;
 import PawzdCO.common.data.World;
 import PawzdCO.common.data.GameData.Keys;
-import PawzdCO.common.services.IBulletSPI;
 import PawzdCO.common.services.IEntityProcessingService;
 
 public class PlayerControlSystem implements IEntityProcessingService{
@@ -29,25 +26,18 @@ public class PlayerControlSystem implements IEntityProcessingService{
                 } else if (player.getLocation().getY() > gameData.height) {
                     player.getLocation().setY(1);
                 }
-
-                double changeX = Math.cos(Math.toRadians(player.getRotation() -90));
-                double changeY = Math.sin(Math.toRadians(player.getRotation() -90));
                 
                 if (gameData.isDown(Keys.UP)) {
-                    player.getVelocity().add(new Vector2(changeX, changeY)).max(5);
+                    player.accelerate();
                 }
                 if (gameData.isDown(Keys.RIGHT)) {
-                    player.setRotation(player.getRotation() + 3);
+                    player.rotateRight();
                 }
                 if (gameData.isDown(Keys.LEFT)) {
-                    player.setRotation(player.getRotation() - 3);
+                    player.rotateLeft();
                 }
                 if (gameData.isPressed(Keys.SPACE)) {
-                    ServiceLoader.load(IBulletSPI.class).findFirst().ifPresent(
-                        bulletSPI -> {
-                            bulletSPI.spawnEntity(player);
-                        }
-                    );
+                    player.shoot();
                 }
 
                 player.getVelocity().lerp(new Vector2(0,0), 0.02f);
