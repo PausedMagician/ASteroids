@@ -3,6 +3,7 @@ package PawzdCO.asteroid;
 import java.util.List;
 import java.util.Random;
 
+import PawzdCO.common.data.Config;
 import PawzdCO.common.data.GameData;
 import PawzdCO.common.data.Vector2;
 import PawzdCO.common.data.World;
@@ -14,7 +15,7 @@ public class AsteroidProcesser implements IEntityProcessingService {
     public void process(World world, GameData gameData) {
         List<Asteroid> asteroids = world.getEntities(Asteroid.class);
         
-        if (asteroids.stream().filter(e -> e.getRadius() > 10).count() < 5) {
+        if (asteroids.stream().filter(e -> e.getRadius() > Asteroid.ASTEROID_SIZING * Config.SIZING).count() < 5) {
             spawnAsteroid(world, gameData);
         }
 
@@ -42,8 +43,8 @@ public class AsteroidProcesser implements IEntityProcessingService {
 
     private void spawnAsteroid(World world, GameData gameData) {
         Asteroid asteroid = new Asteroid();
-        
-        asteroid.setRadius((int) (Math.random() * 20 + 10));
+        double sizing = Asteroid.ASTEROID_SIZING * Config.SIZING;
+        asteroid.setRadius((int) (Math.random() * (sizing * 2) + sizing));
 
         Vector2 location = new Vector2(1, 1);
 
@@ -66,12 +67,12 @@ public class AsteroidProcesser implements IEntityProcessingService {
         // Point towards middle of the screen with variation
         Vector2 direction = new Vector2(gameData.width / 2, gameData.height / 2).subtract(location);
         direction = direction.normalize();
-        direction.rotate(Math.random() * 20 - 10); // Random rotation between -10 and 10 degrees
+        direction.rotate(Math.random() * 40 - 20); // Random rotation between -20 and 20 degrees
         asteroid.setVelocity(direction.multiply(Math.random() + 1)); // Random speed between 1 and 2
 
         asteroid.setLocation(location);
         asteroid.setRotation(Math.random() * 360);
-        asteroid.setHealth(asteroid.getRadius() / 2);
+        asteroid.setHealth(Math.ceilDiv(asteroid.getRadius(), (int) sizing));
         asteroid.setAlive(true);
 
         world.addEntity(asteroid);
