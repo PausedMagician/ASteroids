@@ -5,7 +5,7 @@ import PawzdCO.common.services.IEntityProcessingService;
 import PawzdCO.common.services.IGamePlugin;
 
 module asteroid {
-    requires common;
+    requires transitive common;
     
     provides IGamePlugin with AsteroidPlugin;
     exports PawzdCO.asteroid;

@@ -9,8 +9,9 @@
           <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>PawzdCO</groupId>
     <artifactId>asteroid-splitter</artifactId>
+    <name>asteroid-splitter</name>
+    <packaging>jar</packaging>
     
     <dependencies>
         <dependency>

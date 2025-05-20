@@ -1,6 +1,6 @@
 module common {
     requires javafx.base;
-    requires javafx.graphics;
+    requires transitive javafx.graphics;
     exports PawzdCO.common.data;
     exports PawzdCO.common.services;
 }

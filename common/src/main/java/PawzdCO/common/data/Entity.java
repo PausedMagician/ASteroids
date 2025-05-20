@@ -86,12 +86,10 @@ public class Entity {
 
     private Polygon polygon;
 
-    @SuppressWarnings("exports")
     public Polygon getPolygon() {
         return this.polygon;
     }
 
-    @SuppressWarnings("exports")
     public void setPolygon(Polygon polygon) {
         this.polygon = polygon;
     }

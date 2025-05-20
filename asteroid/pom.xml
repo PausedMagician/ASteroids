@@ -9,8 +9,9 @@
           <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>PawzdCO</groupId>
     <artifactId>asteroid</artifactId>
+    <name>asteroid</name>
+    <packaging>jar</packaging>
     
     <dependencies>
         <dependency>

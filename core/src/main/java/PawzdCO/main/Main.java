@@ -12,7 +12,6 @@ import PawzdCO.common.services.IWorldAware;
 import java.util.Collection;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -70,7 +69,16 @@ public class Main extends Application {
         scene.setOnKeyReleased(event -> setupKeys(event, false));
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("ASteroids");
+        primaryStage.setResizable(true);
+        primaryStage.setOnCloseRequest(event -> {
+            for(IGamePlugin plugin : getPlugins()) {
+                System.out.println("Goodbye " + plugin.getClass().getName());
+                plugin.stop(gameData, w);
+            }
+            System.out.println("Goodbye all!");
+            System.exit(0);
+        });
         primaryStage.show();
 
         for(IWorldAware module : ServiceLoader.load(IWorldAware.class)) {

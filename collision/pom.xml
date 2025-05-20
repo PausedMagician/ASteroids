@@ -9,9 +9,10 @@
           <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>PawzdCO</groupId>
     <artifactId>collision</artifactId>
-    
+    <name>collision</name>
+    <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>PawzdCO</groupId>

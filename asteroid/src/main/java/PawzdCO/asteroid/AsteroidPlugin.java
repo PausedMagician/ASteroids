@@ -20,8 +20,7 @@ public class AsteroidPlugin implements IGamePlugin {
 
     @Override
     public void stop(GameData gd, World w) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stop'");
+        w.getEntities().removeIf(e -> e instanceof Asteroid);
     }
     
 }
