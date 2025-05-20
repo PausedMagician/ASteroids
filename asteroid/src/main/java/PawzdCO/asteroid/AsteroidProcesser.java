@@ -13,20 +13,24 @@ public class AsteroidProcesser implements IEntityProcessingService {
     @Override
     public void process(World world, GameData gameData) {
         List<Asteroid> asteroids = world.getEntities(Asteroid.class);
-
-        // All asteroid above 10 radius count towards the 5 limit
-        if (asteroids.stream().filter(a -> a.getRadius() > 10).count() < 5) {
+        
+        if (asteroids.stream().filter(e -> e.getRadius() > 10).count() < 5) {
             spawnAsteroid(world, gameData);
         }
-            
 
         for (Asteroid asteroid : asteroids) {
             if (asteroid.isAlive()) {
                 asteroid.getLocation().add(asteroid.getVelocity());
                 // Random based on id
                 Random random = new Random(asteroid.getId().hashCode());
-                asteroid.setRotation(asteroid.getRotation() + (asteroid.getVelocity().length() / 10 / (asteroid.getRadius() / 10)) * random.nextInt(-1, 2));
+                float angularVelocity = random.nextInt(-1, 2);
+                // the bigger the asteroid, the slower it rotates
+                angularVelocity = (float) (angularVelocity * Math.pow(asteroid.getRadius(), -0.5));
+                // The faster the asteroid, the faster it rotates
+                angularVelocity = (float) (angularVelocity * Math.pow(asteroid.getVelocity().length(), 0.5));
+                asteroid.setRotation(asteroid.getRotation() + angularVelocity);
             } else {
+                System.out.println("Removing asteroid " + asteroid.getId());
                 world.removeEntity(asteroid);
             }
             if (asteroid.getLocation().getX() < 0 || asteroid.getLocation().getX() > gameData.width

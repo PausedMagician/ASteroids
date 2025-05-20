@@ -18,13 +18,15 @@ public class Collision implements IEntityPostProcessingService {
             if (!entityA.isAlive()) continue;
             for (int j = i + 1; j < entities.size(); j++) {
                 Entity entityB = entities.get(j);
+                if (entityA.equals(entityB)) continue;
                 if (!entityB.isAlive()) continue;
                 if (!entityA.isAlive()) continue;
-                if (entityA.equals(entityB)) continue;
                 // Check if locations and radius collide
                 if (entityA.getLocation().distance(entityB.getLocation()) < entityA.getRadius() + entityB.getRadius()) {
                     entityA.setHealth(entityA.getHealth() - 1);
                     entityB.setHealth(entityB.getHealth() - 1);
+
+                    // System.out.println(entityA.getId() + " collided with " + entityB.getId());
 
                     if (entityA.getHealth() <= 0) {
                         entityA.kill();

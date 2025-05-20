@@ -36,21 +36,22 @@ public class AsteroidSplitter implements IAsteroidSPI, IWorldAware {
             try {
                 Entity newAsteroid = entity.getClass().getConstructor().newInstance();
                 newAsteroid.setRadius(childRadius);
-                newAsteroid.setHealth(Math.max(1, childRadius/2));
+                newAsteroid.setHealth(childRadius / 2);
                 
                 Vector2 newLocation = new Vector2(location).add(new Vector2(direction).multiply(parentRadius));
                 
                 newAsteroid.setLocation(newLocation);
                 // System.out.println(newAsteroid.getId() + " at " + newAsteroid.getLocation());
 
-                newAsteroid.setVelocity(new Vector2(direction).multiply(entity.getVelocity().length() / 2).add(new Vector2(entity.getVelocity()).divide(numChildren)));
+                newAsteroid.setVelocity(new Vector2(direction).multiply(Math.max(0.2, entity.getVelocity().length() / 2)).add(new Vector2(entity.getVelocity()).divide(numChildren*2)));
+                // newAsteroid.setVelocity(new Vector2(direction));
                 newAsteroid.setRotation(Math.random() * 360);
                 
-                direction.rotate(360.0 / numChildren);
                 AsteroidSplitter.world.addEntity(newAsteroid);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            direction.rotate(360.0 / numChildren);
         }
     }
     
