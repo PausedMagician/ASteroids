@@ -37,6 +37,13 @@ public class Vector2 {
         this.y += vector2.y;
         return this;
     }
+
+    public Vector2 add(double x, double y) {
+        this.x += x;
+        this.y += y;
+        return this;
+    }
+
     public void addX(double x) {
         this.x += x;
     }
@@ -108,6 +115,17 @@ public class Vector2 {
 
     public double angle(Vector2 v) {
         return Math.acos(dot(v) / (length() * v.length()));
+    }
+
+    public Vector2 rotate(double degrees) {
+        double radians = Math.toRadians(degrees);
+        double cos = Math.cos(radians);
+        double sin = Math.sin(radians);
+        double newX = x * cos - y * sin;
+        double newY = x * sin + y * cos;
+        this.x = newX;
+        this.y = newY;
+        return this;
     }
 
     public double cross(Vector2 v) {

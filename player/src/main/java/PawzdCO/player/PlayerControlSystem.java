@@ -33,13 +33,13 @@ public class PlayerControlSystem implements IEntityProcessingService{
                 double changeX = Math.cos(Math.toRadians(player.getRotation() -90));
                 double changeY = Math.sin(Math.toRadians(player.getRotation() -90));
                 
-                if (gameData.isPressed(Keys.UP)) {
+                if (gameData.isDown(Keys.UP)) {
                     player.getVelocity().add(new Vector2(changeX, changeY)).max(5);
                 }
-                if (gameData.isPressed(Keys.RIGHT)) {
+                if (gameData.isDown(Keys.RIGHT)) {
                     player.setRotation(player.getRotation() + 3);
                 }
-                if (gameData.isPressed(Keys.LEFT)) {
+                if (gameData.isDown(Keys.LEFT)) {
                     player.setRotation(player.getRotation() - 3);
                 }
                 if (gameData.isPressed(Keys.SPACE)) {

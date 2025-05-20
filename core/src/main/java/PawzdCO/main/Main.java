@@ -89,18 +89,18 @@ public class Main extends Application {
         switch(event.getCode()) {
             case UP:
             case W:
-                this.gameData.setPressed(Keys.UP, pressed);
+                this.gameData.setDown(Keys.UP, pressed);
                 break;
             case RIGHT:
             case D:
-                this.gameData.setPressed(Keys.RIGHT, pressed);
+                this.gameData.setDown(Keys.RIGHT, pressed);
                 break;
             case LEFT:
             case A:
-                this.gameData.setPressed(Keys.LEFT, pressed);
+                this.gameData.setDown(Keys.LEFT, pressed);
                 break;
             case SPACE:
-                this.gameData.setPressed(Keys.SPACE, pressed);
+                this.gameData.setDown(Keys.SPACE, pressed);
                 break;
             default:
                 break;
@@ -121,6 +121,7 @@ public class Main extends Application {
 
                 while (accumulator >= fixedDelta) {
                     update();
+                    gameData.updateKeys();
                     draw();
                     accumulator -= fixedDelta;
                 }

@@ -16,14 +16,24 @@ public class GameData {
     }
 
     EnumMap<Keys, Boolean> keys = new EnumMap<>(Keys.class);
+    EnumMap<Keys, Boolean> keysLast = new EnumMap<>(Keys.class);
 
-    public void setPressed(Keys key, boolean pressed) {
+    public void setDown(Keys key, boolean pressed) {
         this.keys.put(key, pressed);
     }
 
-    public boolean isPressed(Keys key) {
+    public boolean isDown(Keys key) {
         return keys.get(key);
     }
+
+    public boolean isPressed(Keys key) {
+        return keys.get(key) && !keysLast.get(key);
+    }
+
+    public void updateKeys() {
+        keysLast.putAll(keys);
+    }
+
 
     public GameData() {
         this.keys.put(Keys.UP, false);

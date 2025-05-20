@@ -19,6 +19,7 @@
         <module>collision</module>
         <module>asteroid</module>
         <module>asteroid2</module>
+        <module>asteroid_splitter</module>
     </modules>
 
     <properties>

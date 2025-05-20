@@ -117,8 +117,29 @@ public class Entity {
     public String toString() {
         // Make a string that's always the same length with full representation of the
         // entity
-        return String.format("%s:%s:%s:%s:%s:%s:%s:%s:%s:%s:%s", this.getClass().getSimpleName(), this.id.toString(),
-                this.isAlive, this.health, this.radius, this.location, this.velocity, this.rotation,
-                this.polygon.getPoints());
+        return String.format(
+            "%s:%s:%s:%s:%s:%s:%s:%s:%s",
+            this.getClass().getSimpleName(),
+            this.id.toString(),
+            String.valueOf(this.isAlive),
+            String.valueOf(this.health),
+            String.valueOf(this.radius),
+            this.location.toString(),
+            this.velocity.toString(),
+            String.valueOf(this.rotation),
+            this.polygon.getPoints().toString()
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Entity other = (Entity) obj;
+        return this.id.equals(other.id);
     }
 }
