@@ -1,13 +1,16 @@
 import PawzdCO.common.services.*;
 
 module Core {
+    requires transitive common;
     requires javafx.controls;
-    requires javafx.graphics;
-    // opens PawzdCO.main to javafx.graphics.spring.core;
+    requires transitive javafx.graphics;
+    requires spring.core;
+    requires spring.context;
+    requires spring.beans;
 
-
-opens PawzdCO.main to javafx.graphics;
-    requires common;
+    // opens PawzdCO.main to javafx.graphics;
+    exports PawzdCO.main;
+    opens PawzdCO.main to javafx.graphics,spring.core;
     uses IGamePlugin;
     uses IEntityProcessingService;
     uses IEntityPostProcessingService;
