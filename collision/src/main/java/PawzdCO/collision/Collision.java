@@ -29,10 +29,10 @@ public class Collision implements IEntityPostProcessingService {
                     // System.out.println(entityA.getId() + " collided with " + entityB.getId());
 
                     if (entityA.getHealth() <= 0) {
-                        entityA.kill();
+                        entityA.kill(gameData);
                     }
                     if (entityB.getHealth() <= 0) {
-                        entityB.kill();
+                        entityB.kill(gameData);
                     }
                 }
 

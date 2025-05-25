@@ -28,6 +28,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -45,13 +46,19 @@ public class Main extends Application {
     
     Pane gameWindow = new Pane();
     Canvas canvas = new Canvas(gameData.width, gameData.height);
-    Text debugText = new Text(10,10, "");
+    Text scoreText = new Text(10,10, "0 score");
 
     @Override
     public void start(Stage primaryStage) {
 
         gameWindow.setPrefSize(gameData.width, gameData.height);
-        gameWindow.getChildren().add(debugText);
+
+        scoreText.setFill(Paint.valueOf("white"));
+        gameData.getScore().addListener((observable, oldValue, newValue) -> {
+            scoreText.setText(String.format("%d score", newValue.intValue()));
+        });
+
+        gameWindow.getChildren().add(scoreText);
         gameWindow.getChildren().add(canvas);
         gameWindow.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 

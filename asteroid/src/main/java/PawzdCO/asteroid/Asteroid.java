@@ -5,6 +5,7 @@ import java.util.ServiceLoader;
 
 import PawzdCO.common.data.Config;
 import PawzdCO.common.data.Entity;
+import PawzdCO.common.data.GameData;
 import PawzdCO.common.services.IAsteroidSPI;
 
 public class Asteroid extends Entity {
@@ -53,11 +54,14 @@ public class Asteroid extends Entity {
     }
 
     @Override
-    public void kill() {
-        super.kill();
+    public void kill(GameData gameData) {
+        super.kill(gameData);
         // Add score and split.
+        // Add 1/10th of the radius to the score
+        gameData.addScore((int) (this.getRadius() * 0.1));
+        // If the asteroid is larger than 1.3 times the ASTEROID_SIZING, split it
         if (this.getRadius() >= ASTEROID_SIZING * Config.SIZING * 1.3) {
-            // System.out.println("Splitting asteroid" + this.getId());
+            // Find a service if it's present. If not nothing happens.
             ServiceLoader.load(IAsteroidSPI.class).findFirst().ifPresent(asteroidSPI -> {
                 asteroidSPI.spawnEntity(this);
             });

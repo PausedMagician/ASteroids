@@ -2,6 +2,8 @@ package PawzdCO.common.data;
 
 import java.util.EnumMap;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class GameData {
     // Window data
     public int width = 800;
@@ -43,13 +45,13 @@ public class GameData {
     }
 
     // Player data
-    private int score;
+    private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
 
-    public int getScore() {
+    public SimpleIntegerProperty getScore() {
         return score;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void addScore(int value) {
+        this.getScore().set(this.getScore().get() + value);
     }
 }

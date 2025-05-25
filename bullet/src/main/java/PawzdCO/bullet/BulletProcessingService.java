@@ -16,7 +16,7 @@ public class BulletProcessingService implements IEntityProcessingService {
             }
             if (bullet.getLocation().getX() < 0 || bullet.getLocation().getX() > gameData.width
                     || bullet.getLocation().getY() < 0 || bullet.getLocation().getY() > gameData.height) {
-                bullet.kill();
+                bullet.kill(gameData);
             }
 
             bullet.getLocation().add(bullet.getVelocity());

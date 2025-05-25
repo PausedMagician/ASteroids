@@ -24,7 +24,7 @@ public class Entity {
         this.isAlive = isAlive;
     }
 
-    public void kill() {
+    public void kill(GameData gameData) {
         this.isAlive = false;
     }
 
