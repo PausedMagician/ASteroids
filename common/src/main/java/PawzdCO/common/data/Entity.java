@@ -84,6 +84,10 @@ public class Entity {
         this.rotation = rotation;
     }
 
+    public void setRotation(Vector2 direction) {
+        this.rotation = Math.toDegrees(direction.angle(new Vector2(1, 0)));
+    }
+
     private Polygon polygon;
 
     public Polygon getPolygon() {

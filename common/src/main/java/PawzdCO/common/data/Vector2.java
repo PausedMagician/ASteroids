@@ -113,6 +113,11 @@ public class Vector2 {
         return x * v.x + y * v.y;
     }
 
+    /**
+     * Returns the angle in radians between this vector and the given vector.
+     * @param v
+     * @return
+     */
     public double angle(Vector2 v) {
         return Math.acos(dot(v) / (length() * v.length()));
     }
