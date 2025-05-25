@@ -36,6 +36,10 @@ public class EnemyControlSystem implements IEntityProcessingService {
                 enemy.rotateRight();
             }
 
+            // Low chance for enemy to fire
+            if (Math.random() < 0.01) {
+                enemy.shoot();
+            }
 
             enemy.getLocation().add(enemy.getVelocity());
 
