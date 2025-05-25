@@ -17,3 +17,7 @@ buildNumber.properties
 .classpath
 /mods-mvn*
 /libs
+
+# mvn and vscode
+.mvn
+.vscode
