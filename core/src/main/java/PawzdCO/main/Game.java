@@ -35,14 +35,13 @@ import javafx.stage.Stage;
 public class Game {
 
     GameData gameData = new GameData();
-    World w = new World();
+    World world = new World();
 
-    
     public Game(Collection<? extends IEntityProcessingService> processingServices, Collection<? extends IEntityPostProcessingService> postProcessingServices) {
         this.processingServices = processingServices;
         this.postProcessingServices = postProcessingServices;
     }
-    
+
     Pane gameWindow = new Pane();
     Canvas canvas = new Canvas(gameData.width, gameData.height);
     Text scoreText = new Text(10,10, "0 score");
@@ -69,11 +68,11 @@ public class Game {
             System.out.println(newVal);
         });
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            gameData.height = (int)((double) newVal);
+            gameData.height = (int) ((double) newVal);
             canvas.setHeight(gameData.height);
             System.out.println(newVal);
         });
-        
+
         scene.setOnKeyPressed(event -> setupKeys(event, true));
         scene.setOnKeyReleased(event -> setupKeys(event, false));
 
@@ -83,19 +82,19 @@ public class Game {
         primaryStage.setOnCloseRequest(event -> {
             for(IGamePlugin plugin : getPlugins()) {
                 System.out.println("Goodbye " + plugin.getClass().getName());
-                plugin.stop(gameData, w);
+                plugin.stop(gameData, world);
             }
             System.out.println("Goodbye all!");
             System.exit(0);
         });
         primaryStage.show();
 
-        for(IWorldAware module : ServiceLoader.load(IWorldAware.class)) {
-            module.provideWorld(w);
+        for (IWorldAware module : ServiceLoader.load(IWorldAware.class)) {
+            module.provideWorld(world);
         }
 
-        for(IGamePlugin plugin : getPlugins()) {
-            plugin.start(gameData, w);
+        for (IGamePlugin plugin : getPlugins()) {
+            plugin.start(gameData, world);
         }
 
         startTicking();
@@ -103,7 +102,7 @@ public class Game {
     }
 
     void setupKeys(KeyEvent event, boolean pressed) {
-        switch(event.getCode()) {
+        switch (event.getCode()) {
             case UP:
             case W:
                 this.gameData.setDown(Keys.UP, pressed);
@@ -137,34 +136,36 @@ public class Game {
                 accumulator += elapsedTime;
 
                 while (accumulator >= fixedDelta) {
-                    update();
-                    gameData.updateKeys();
-                    draw();
+                    tick();
                     accumulator -= fixedDelta;
                 }
             }
         }.start();
     }
 
+    void tick() {
+        update();
+        gameData.updateKeys();
+        render();
+    }
 
     void update() {
         for (IEntityProcessingService service : getEntityProcessingServices()) {
-            service.process(w, gameData);
+            service.process(world, gameData);
         }
         for (IEntityPostProcessingService service : getEntityPostProcessingServices()) {
-            service.process(w, gameData);
+            service.process(world, gameData);
         }
     }
 
-
-    private void draw() {
+    void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, gameData.width, gameData.height);
 
-        for (Entity e : this.w.getEntities()) {
+        for (Entity e : this.world.getEntities()) {
             if (!e.isAlive()) {
                 Polygon removedPolygon = e.getPolygon();
-                this.w.removeEntity(e);
+                this.world.removeEntity(e);
                 gameWindow.getChildren().remove(removedPolygon);
                 continue;
             }
@@ -177,14 +178,12 @@ public class Game {
         }
     }
 
-
     // Services
 
     Collection<? extends IEntityProcessingService> processingServices;
     Collection<? extends IEntityPostProcessingService> postProcessingServices;
 
     ModuleLayer layer = getModuleLayer(2);
-
 
     private ModuleLayer getModuleLayer(int _layer) {
         ModuleFinder finder = ModuleFinder.of(Paths.get(String.format("mods-mvn-%,d", _layer)));
@@ -208,7 +207,7 @@ public class Game {
         }
         return postProcessingServices;
     }
-    
+
     private Collection<? extends IGamePlugin> getPlugins() {
         return ServiceLoader.load(layer, IGamePlugin.class).stream().map(ServiceLoader.Provider::get).collect(toList());
     }

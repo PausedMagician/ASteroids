@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     GameData gameData = new GameData();
-    World w = new World();
+    World world = new World();
 
     
     public static void main(String[] args) {
