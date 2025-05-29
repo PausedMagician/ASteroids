@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     GameData gameData = new GameData();
-    World w = new World();
+    World world = new World();
 
     
     public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> {
             for(IGamePlugin plugin : getPlugins()) {
                 System.out.println("Goodbye " + plugin.getClass().getName());
-                plugin.stop(gameData, w);
+                plugin.stop(gameData, world);
             }
             System.out.println("Goodbye all!");
             System.exit(0);
@@ -92,11 +92,11 @@ public class Main extends Application {
         primaryStage.show();
 
         for(IWorldAware module : ServiceLoader.load(IWorldAware.class)) {
-            module.provideWorld(w);
+            module.provideWorld(world);
         }
 
         for(IGamePlugin plugin : getPlugins()) {
-            plugin.start(gameData, w);
+            plugin.start(gameData, world);
         }
 
         startTicking();
@@ -138,34 +138,37 @@ public class Main extends Application {
                 accumulator += elapsedTime;
 
                 while (accumulator >= fixedDelta) {
-                    update();
-                    gameData.updateKeys();
-                    draw();
+                    tick();
                     accumulator -= fixedDelta;
                 }
             }
         }.start();
     }
 
+    void tick() {
+        update();
+        gameData.updateKeys();
+        render();
+    }
 
     void update() {
         for (IEntityProcessingService service : getEntityProcessingServices()) {
-            service.process(w, gameData);
+            service.process(world, gameData);
         }
         for (IEntityPostProcessingService service : getEntityPostProcessingServices()) {
-            service.process(w, gameData);
+            service.process(world, gameData);
         }
     }
 
 
-    private void draw() {
+    void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, gameData.width, gameData.height);
 
-        for (Entity e : this.w.getEntities()) {
+        for (Entity e : this.world.getEntities()) {
             if (!e.isAlive()) {
                 Polygon removedPolygon = e.getPolygon();
-                this.w.removeEntity(e);
+                this.world.removeEntity(e);
                 gameWindow.getChildren().remove(removedPolygon);
                 continue;
             }
