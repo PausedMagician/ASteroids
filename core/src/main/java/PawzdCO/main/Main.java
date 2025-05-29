@@ -161,7 +161,7 @@ public class Main extends Application {
     }
 
 
-    private void render() {
+    void render() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, gameData.width, gameData.height);
 
