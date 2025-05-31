@@ -22,6 +22,8 @@
         <module>asteroid2</module>
         <module>asteroid_splitter</module>
         <module>enemy</module>
+        <module>ScoreKeeper</module>
+        <module>ScoreWhisperer</module>
     </modules>
 
     <properties>

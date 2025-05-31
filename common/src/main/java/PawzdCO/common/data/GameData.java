@@ -1,7 +1,9 @@
 package PawzdCO.common.data;
 
 import java.util.EnumMap;
+import java.util.ServiceLoader;
 
+import PawzdCO.common.services.IScoreSPI;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class GameData {
@@ -48,10 +50,19 @@ public class GameData {
     private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
 
     public SimpleIntegerProperty getScore() {
-        return score;
+        // Call get
+        ServiceLoader.load(IScoreSPI.class).findFirst().ifPresent(
+            spi -> this.score.set(spi.getScore())
+        );
+        return this.score;
     }
 
     public void addScore(int value) {
-        this.getScore().set(this.getScore().get() + value);
+        // Call post
+        ServiceLoader.load(IScoreSPI.class).findFirst().ifPresent(
+            spi -> {
+                this.score.set(spi.addScore(value));
+            }
+        );
     }
 }
