@@ -7,5 +7,4 @@ module player {
 
     provides IGamePlugin with PlayerPluginService;
     provides IEntityProcessingService with PlayerControlSystem;
-    uses IBulletSPI;
 }
