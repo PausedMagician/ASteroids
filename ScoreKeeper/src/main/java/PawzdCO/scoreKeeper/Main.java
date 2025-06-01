@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class Main {
-
     private int score = 0;
     
     public static void main(String[] args) {
@@ -32,11 +31,4 @@ public class Main {
         score += points;
         return score;
     }
-
-    // @GetMapping("/score")
-    // public int calculateHealt(@RequestParam(value = "point") Long point) {
-    //     totalScore += point;
-    //     return totalScore ;
-    // }
-
 }
