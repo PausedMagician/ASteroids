@@ -18,14 +18,11 @@ public class ScoreWhisperer implements IScoreSPI {
 
     @Override
     public int setScore(int score) {
-        // /score/set
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setScore'");
+        return sendRequest("score/set?points=" + score);
     }
 
     @Override
     public int addScore(int score) {
-        // /score/add
         return sendRequest("score/add?points=" + score);
     }
 
