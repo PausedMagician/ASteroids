@@ -21,9 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage window) throws Exception {
-        System.out.println("Pre ctx");
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(ModuleConfig.class);
-        System.out.println("Post ctx");
         
         for (String beanName : ctx.getBeanDefinitionNames()) {
             System.out.println(beanName);
